@@ -11,9 +11,9 @@ public class XmlElement {
     private Map<String, String> attributes;
     private List<XmlElement> children;
 
-    public XmlElement(String tag, String textContent) {
+    public XmlElement(String tag) {
         this.tag = tag;
-        this.textContent = textContent;
+        this.textContent = "";
         this.attributes = new HashMap<>();
         this.children = new ArrayList<>();
     }
@@ -48,5 +48,40 @@ public class XmlElement {
 
     public List<XmlElement> getChildren() {
         return this.children;
+    }
+
+    public String toXml(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+
+        // 4 spaces for each level of indentation
+        String spaces = "";
+        for (int i = 0; i < indentLevel; i++) {
+            spaces += "    ";
+        }
+
+        sb.append(spaces).append("<").append(tag);
+
+        //add attributes if they exist
+        for (String key : attributes.keySet()) {
+            sb.append(" ").append(key).append("=\"").append(attributes.get(key)).append("\"");
+        }
+        sb.append(">");
+
+        // add text content if it exists, otherwise add children
+        if (textContent != null && !textContent.isEmpty()) {
+            sb.append(textContent);
+        } else if (!children.isEmpty()) {
+            sb.append("\n");
+            // recursively call toXml on children with increased indent level
+            for (XmlElement child : children) {
+                sb.append(child.toXml(indentLevel + 1));
+            }
+            // add indentation for closing tag
+            sb.append(spaces);
+        }
+
+        sb.append("</").append(tag).append(">\n");
+
+        return sb.toString();
     }
 }

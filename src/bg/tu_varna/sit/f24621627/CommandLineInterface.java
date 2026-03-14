@@ -3,7 +3,9 @@ package bg.tu_varna.sit.f24621627;
 import java.util.Scanner;
 
 public class CommandLineInterface {
+
     private XmlDocument document = new XmlDocument();
+
     public void run() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
@@ -36,7 +38,25 @@ public class CommandLineInterface {
                     System.out.println("Exiting the program...");
                     isRunning = false;
                     break;
-                // open, close...
+                case "save":
+                    if (args.length > 1 && args[1].equalsIgnoreCase("as")) { // "save as" check
+                        if (args.length < 3) {
+                            System.out.println("Error: Please provide a file path. Example: save as newfile.xml");
+                        } else {
+                            String path = args[2].replace("\"", "");
+                            document.saveAs(path);
+                        }
+                    } else {
+                        document.save();
+                    }
+                    break;
+                case "print":
+                    if (!document.isOpened()) {
+                        System.out.println("Error: No file is currently opened.");
+                    } else {
+                        System.out.println(document.getRootElement().toXml(0));
+                    }
+                    break;
                 default:
                     System.out.println("Unknown command. Type 'help' to see available commands.");
             }
@@ -53,4 +73,5 @@ public class CommandLineInterface {
         System.out.println("save as <file> \tsaves the currently opened file in <file>");
         System.out.println("help         \t prints this information");
     }
+
 }
