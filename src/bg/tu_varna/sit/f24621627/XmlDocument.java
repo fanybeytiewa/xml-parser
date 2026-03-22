@@ -24,6 +24,8 @@ public class XmlDocument {
             XmlParser parser = new XmlParser();
             this.rootElement = parser.parse(content);
 
+            new IdAssigner().assignIds(this.rootElement);
+
             this.currentFilePath = filePath;
             this.isFileOpened = true;
             System.out.println("Successfully opened " + filePath);

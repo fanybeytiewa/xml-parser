@@ -66,12 +66,13 @@ public class CommandLineInterface {
 
     private void printHelp() {
         System.out.println("The following commands are supported:");
-        System.out.println("open <file>  \t opens <file>");
-        System.out.println("close        \t closes currently opened file");
-        System.out.println("exit         \t exits the program");
-        System.out.println("save         \t saves the currently opened file");
-        System.out.println("save as <file> \tsaves the currently opened file in <file>");
-        System.out.println("help         \t prints this information");
+        System.out.println("open <file>\t\t opens <file>");
+        System.out.println("close\t\t\t closes currently opened file");
+        System.out.println("exit \t\t\t exits the program");
+        System.out.println("save \t\t\t saves the currently opened file");
+        System.out.println("save as <file>\tsaves the currently opened file in <file>");
+        System.out.println("print\t\t\tprints the content of the XML file");
+        System.out.println("help \t\t\tprints this information");
     }
 
 }

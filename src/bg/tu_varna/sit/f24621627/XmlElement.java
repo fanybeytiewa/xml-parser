@@ -38,6 +38,14 @@ public class XmlElement {
         return this.attributes.get(key);
     }
 
+    public String getId() {
+        return this.attributes.get("id");
+    }
+
+    public void setId(String id) {
+        this.attributes.put("id", id);
+    }
+
     public Map<String, String> getAttributes() {
         return this.attributes;
     }
