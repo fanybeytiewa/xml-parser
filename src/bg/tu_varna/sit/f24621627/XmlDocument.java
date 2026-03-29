@@ -4,11 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class XmlDocument {
     private String currentFilePath;
     private XmlElement rootElement; // main tag
     private boolean isFileOpened;
+
+    private Map<String, XmlElement> idRegistry;
 
     public XmlDocument() {
         this.isFileOpened = false;
@@ -23,8 +26,9 @@ public class XmlDocument {
 
             XmlParser parser = new XmlParser();
             this.rootElement = parser.parse(content);
+            IdAssigner assigner = new IdAssigner();
+            this.idRegistry = assigner.assignIds(this.rootElement);
 
-            new IdAssigner().assignIds(this.rootElement);
 
             this.currentFilePath = filePath;
             this.isFileOpened = true;
@@ -84,5 +88,12 @@ public class XmlDocument {
 
     public XmlElement getRootElement() {
         return this.rootElement;
+    }
+
+    public XmlElement getElementById(String id) {
+        if (idRegistry != null) {
+            return idRegistry.get(id);
+        }
+        return null;
     }
 }

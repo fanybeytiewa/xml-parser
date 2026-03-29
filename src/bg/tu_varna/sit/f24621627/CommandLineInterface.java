@@ -57,8 +57,24 @@ public class CommandLineInterface {
                         System.out.println(document.getRootElement().toXml(0));
                     }
                     break;
+                case "select":
+                    if (!document.isOpened()) {
+                        System.out.println("Error: No file is currently opened.");
+                        break;
+                    }
+                    if (args.length < 3) {
+                        System.out.println("Error: Invalid arguments. Usage: select <id> <key>");
+                        break;
+                    }
+                    else {
+                        String targetId = args[1];
+                        String targetKey = args[2];
+                        selectCommand(targetId, targetKey);
+                    }
+                    break;
                 default:
                     System.out.println("Unknown command. Type 'help' to see available commands.");
+
             }
         }
         scanner.close();
@@ -73,6 +89,24 @@ public class CommandLineInterface {
         System.out.println("save as <file>\tsaves the currently opened file in <file>");
         System.out.println("print\t\t\tprints the content of the XML file");
         System.out.println("help \t\t\tprints this information");
+    }
+
+    private void selectCommand(String targetId, String targetKey) {
+        // search for the element with the specified ID
+        XmlElement elementToSelect = document.getElementById(targetId);
+
+        if (elementToSelect == null) {
+            System.out.println("Error: Element with ID '" + targetId + "' not found.");
+        } else {
+            // search for the specified attribute key in the found element
+            String attributeValue = elementToSelect.getAttributeByKey(targetKey);
+
+            if (attributeValue != null) {
+                System.out.println(attributeValue);
+            } else {
+                System.out.println("Error: Attribute '" + targetKey + "' not found in element '" + targetId + "'.");
+            }
+        }
     }
 
 }

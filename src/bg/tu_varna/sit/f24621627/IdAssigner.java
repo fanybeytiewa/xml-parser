@@ -7,8 +7,8 @@ public class IdAssigner {
 
     private int generatedIdCounter = 1;
 
-    public void assignIds(XmlElement root) {
-        if (root == null) return;
+    public Map<String, XmlElement> assignIds(XmlElement root) {
+        if (root == null) return new HashMap<>();
 
         // Pass 1: count how many times each id value appears in the whole document
         Map<String, Integer> idFrequency = new HashMap<>();
@@ -16,7 +16,13 @@ public class IdAssigner {
 
         // Pass 2: assign the final unique ids
         Map<String, Integer> idCounters = new HashMap<>();
-        assignUniqueIds(root, idFrequency, idCounters);
+
+        // create registry
+        Map<String, XmlElement> registry = new HashMap<>();
+
+        assignUniqueIds(root, idFrequency, idCounters, registry);
+
+        return registry;
     }
 
     // idFrequency is updated with counts of each id value found in the document
@@ -31,7 +37,7 @@ public class IdAssigner {
     }
 
     //idFrequency decides what to do, idCounters track suffixes
-    private void assignUniqueIds(XmlElement element, Map<String, Integer> idFrequency, Map<String, Integer> idCounters) {
+    private void assignUniqueIds(XmlElement element, Map<String, Integer> idFrequency, Map<String, Integer> idCounters, Map<String, XmlElement> registry) {
         String rawId = element.getId();
 
         if (rawId == null || rawId.isEmpty()) {
@@ -46,8 +52,11 @@ public class IdAssigner {
             }
         }
 
+        // save the final id -> element mapping in the registry
+        registry.put(element.getId(), element);
+
         for (XmlElement child : element.getChildren()) {
-            assignUniqueIds(child, idFrequency, idCounters);
+            assignUniqueIds(child, idFrequency, idCounters, registry);
         }
     }
 }
