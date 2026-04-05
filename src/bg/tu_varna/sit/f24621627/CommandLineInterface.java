@@ -72,6 +72,32 @@ public class CommandLineInterface {
                         selectCommand(targetId, targetKey);
                     }
                     break;
+                case "set":
+                    if (!document.isOpened()) {
+                        System.out.println("Error: No file is currently opened.");
+                            break;
+                    }
+                    else{
+                        if (args.length < 4) {
+                            System.out.println("Error: Invalid arguments. Usage: set <id> <key> <value>");
+                            break;
+                        } else {
+                            String targetId = args[1];
+                            String targetKey = args[2];
+                            // combine all remaining arguments into a single value (in case the value contains spaces)
+                            StringBuilder valueBuilder = new StringBuilder();
+                            for (int i = 3; i < args.length; i++) {
+                                valueBuilder.append(args[i]);
+                                if (i < args.length - 1) {
+                                    valueBuilder.append(" "); // add space between arguments if it's not the last one
+                                }
+                            }
+
+                            String targetValue = valueBuilder.toString();
+                            setCommand(targetId, targetKey, targetValue);
+                        }
+                    }
+                    break;
                 default:
                     System.out.println("Unknown command. Type 'help' to see available commands.");
 
@@ -106,6 +132,17 @@ public class CommandLineInterface {
             } else {
                 System.out.println("Error: Attribute '" + targetKey + "' not found in element '" + targetId + "'.");
             }
+        }
+    }
+
+    private void setCommand(String targetId, String targetKey, String targetValue) {
+        XmlElement elementToSet = document.getElementById(targetId);
+
+        if (elementToSet == null) {
+            System.out.println("Error: Element with ID '" + targetId + "' not found.");
+        } else {
+            elementToSet.addAttribute(targetKey, targetValue);
+            System.out.println("Successfully set attribute '" + targetKey + "' to '" + targetValue + "' for element '" + targetId + "'.");
         }
     }
 
