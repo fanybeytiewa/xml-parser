@@ -19,6 +19,10 @@ public class XmlDocument {
         this.rootElement = null;
     }
 
+    public Map<String, XmlElement> getIdRegistry() {
+        return idRegistry;
+    }
+
     public void open(String filePath) {
         try {
             // read as string

@@ -1,9 +1,6 @@
 package bg.tu_varna.sit.f24621627;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XmlElement {
     private String tag;
@@ -14,7 +11,7 @@ public class XmlElement {
     public XmlElement(String tag) {
         this.tag = tag;
         this.textContent = "";
-        this.attributes = new HashMap<>();
+        this.attributes = new LinkedHashMap<>(); // LinkedHashMap to preserve attribute order
         this.children = new ArrayList<>();
     }
 
