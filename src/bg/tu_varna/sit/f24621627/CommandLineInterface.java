@@ -1,11 +1,13 @@
 package bg.tu_varna.sit.f24621627;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class CommandLineInterface {
 
     private XmlDocument document = new XmlDocument();
+    private XPathService xpathService = new XPathService();
     private int newChildCounter = 1;
 
     public void run() {
@@ -156,6 +158,15 @@ public class CommandLineInterface {
                     }
                     else {
                         executeNewChild(args);
+                    }
+                    break;
+                case "xpath":
+                    if (!document.isOpened()) {
+                        System.out.println("Error: No file is currently opened.");
+                        break;
+                    }
+                    else {
+                        executeXpath(args);
                     }
                     break;
                 default:
@@ -353,6 +364,36 @@ public class CommandLineInterface {
         document.getIdRegistry().put(instantId, newChild);
 
         System.out.println("Successfully added new child to element '" + targetId + "'. Its new ID is '" + instantId + "'.");
+    }
+
+    private void executeXpath(String[] args) {
+        if (!document.isOpened()) {
+            System.out.println("Error: No file opened.");
+            return;
+        }
+        if (args.length < 3) {
+            System.out.println("Usage: xpath <id> <XPath>");
+            return;
+        }
+
+        String startId = args[1];
+        String path = args[2];
+
+        XmlElement startNode = document.getElementById(startId);
+        if (startNode == null) {
+            System.out.println("Error: Element with ID '" + startId + "' not found.");
+            return;
+        }
+
+        List<String> results = xpathService.evaluate(startNode, path);
+
+        if (results.isEmpty()) {
+            System.out.println("No matches found.");
+        } else {
+            for (String value : results) {
+                System.out.println(value);
+            }
+        }
     }
 
 }
