@@ -15,24 +15,21 @@ public class XPathService {
 
             List<XmlElement> nextLevel = new ArrayList<>();
             for (XmlElement el : currentElements) {
-                // Търсим децата, които съвпадат по име с текущата стъпка
-                nextLevel.addAll(getChildrenByTagName(el, step));
+                // извикваме новия метод, който ще се справя с тагове и индекси като [0]
+                nextLevel.addAll(getChildrenByStep(el, step));
             }
             currentElements = nextLevel;
 
             if (currentElements.isEmpty()) break;
         }
 
-        // Извличаме "стойностите" от финалните елементи
+        // Извличаме стойностите от финалните елементи
         List<String> results = new ArrayList<>();
         for (XmlElement el : currentElements) {
-            // 1. Първо проверяваме за текст (textContent)
             if (el.getTextContent() != null && !el.getTextContent().trim().isEmpty()) {
                 results.add(el.getTextContent().trim());
-            }
-            // 2. Ако няма текст, събираме стойностите на всички негови атрибути
-            else if (!el.getAttributes().isEmpty()) {
-                // Събираме всички стойности на атрибути в един низ (напр. "1965 BGN")
+            } else if (!el.getAttributes().isEmpty()) {
+                // Ако няма текст, връщаме стойностите на атрибутите
                 String attrValues = String.join(" ", el.getAttributes().values());
                 results.add(attrValues);
             }
@@ -40,15 +37,42 @@ public class XPathService {
         return results;
     }
 
-    private List<XmlElement> getChildrenByTagName(XmlElement parent, String tagName) {
-        List<XmlElement> matches = new ArrayList<>();
+
+    private List<XmlElement> getChildrenByStep(XmlElement parent, String step) {
+        String tagName = step;
+        Integer index = null;
+
+        // ПРОВЕРКА ЗА ИНДЕКС
+        if (step.contains("[") && step.endsWith("]")) {
+            tagName = step.substring(0, step.indexOf("["));
+            String indexStr = step.substring(step.indexOf("[") + 1, step.length() - 1);
+            try {
+                index = Integer.parseInt(indexStr);
+            } catch (NumberFormatException e) {
+                index = null;
+            }
+        }
+
+        // Събираме всички деца, които съвпадат по име
+        List<XmlElement> sameTagChildren = new ArrayList<>();
         if (parent.getChildren() != null) {
             for (XmlElement child : parent.getChildren()) {
                 if (child.getTag().equals(tagName)) {
-                    matches.add(child);
+                    sameTagChildren.add(child);
                 }
             }
         }
-        return matches;
+
+        // Ако има валиден индекс, създаваме нов малък списък само с 1 елемент и го връщаме
+        if (index != null) {
+            List<XmlElement> singleMatch = new ArrayList<>();
+            if (index >= 0 && index < sameTagChildren.size()) {
+                singleMatch.add(sameTagChildren.get(index));
+            }
+            return singleMatch;
+        }
+
+        // Ако НЯМА индекс, направо връщаме списъка, който вече напълнихме
+        return sameTagChildren;
     }
 }
