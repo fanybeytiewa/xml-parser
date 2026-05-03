@@ -12,10 +12,10 @@ public class OpenCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 2) {
+        if (getArgs().length < 2) {
             System.out.println("Error: Please provide a file path.");
         } else {
-            document.open(args[1]);
+            document.open(getArgs()[1]);
         }
     }
 }

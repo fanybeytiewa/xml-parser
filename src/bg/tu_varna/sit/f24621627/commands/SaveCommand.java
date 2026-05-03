@@ -12,11 +12,11 @@ public class SaveCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length > 1 && args[1].equalsIgnoreCase("as")) {
-            if (args.length < 3) {
+        if (getArgs().length > 1 && getArgs()[1].equalsIgnoreCase("as")) {
+            if (getArgs().length < 3) {
                 System.out.println("Error: Please provide a file path. Example: save as newfile.xml");
             } else {
-                String path = args[2].replace("\"", "");
+                String path = getArgs()[2].replace("\"", "");
                 document.saveAs(path);
             }
         } else {

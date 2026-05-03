@@ -15,16 +15,16 @@ public class ChildCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 3) {
+        if (getArgs().length < 3) {
             System.out.println("Error: Invalid arguments. Usage: child <id> <n>");
             return;
         }
 
-        String targetId = args[1];
+        String targetId = getArgs()[1];
         int n;
 
         try {
-            n = Integer.parseInt(args[2]);
+            n = Integer.parseInt(getArgs()[2]);
         } catch (NumberFormatException e) {
             System.out.println("Error: The index <n> must be a valid number.");
             return;

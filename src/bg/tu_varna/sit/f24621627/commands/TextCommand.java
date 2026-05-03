@@ -13,12 +13,12 @@ public class TextCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 2) {
+        if (getArgs().length < 2) {
             System.out.println("Error: Invalid arguments. Usage: text <id>");
             return;
         }
 
-        String targetId = args[1];
+        String targetId = getArgs()[1];
         XmlElement element = document.getElementById(targetId);
 
         if (element == null) {

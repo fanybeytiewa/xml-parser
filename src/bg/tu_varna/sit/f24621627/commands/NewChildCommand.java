@@ -14,12 +14,12 @@ public class NewChildCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 2) {
+        if (getArgs().length < 2) {
             System.out.println("Error: Invalid arguments. Usage: newchild <id>");
             return;
         }
 
-        String targetId = args[1];
+        String targetId = getArgs()[1];
         XmlElement parent = document.getElementById(targetId);
 
         if (parent == null) {

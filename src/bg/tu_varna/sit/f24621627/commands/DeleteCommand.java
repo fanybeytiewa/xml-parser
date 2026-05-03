@@ -13,13 +13,13 @@ public class DeleteCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 3) {
+        if (getArgs().length < 3) {
             System.out.println("Error: Invalid arguments. Usage: delete <id> <key>");
             return;
         }
 
-        String targetId = args[1];
-        String targetKey = args[2];
+        String targetId = getArgs()[1];
+        String targetKey = getArgs()[2];
         XmlElement elementToDeleteFrom = document.getElementById(targetId);
 
         if (elementToDeleteFrom == null) {

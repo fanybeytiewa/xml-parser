@@ -15,7 +15,6 @@ public class XPathService {
 
             List<XmlElement> nextLevel = new ArrayList<>();
             for (XmlElement el : currentElements) {
-                // извикваме новия метод, който ще се справя с тагове и индекси като [0]
                 nextLevel.addAll(getChildrenByStep(el, step));
             }
             currentElements = nextLevel;
@@ -23,56 +22,68 @@ public class XPathService {
             if (currentElements.isEmpty()) break;
         }
 
-        // Извличаме стойностите от финалните елементи
         List<String> results = new ArrayList<>();
         for (XmlElement el : currentElements) {
             if (el.getTextContent() != null && !el.getTextContent().trim().isEmpty()) {
                 results.add(el.getTextContent().trim());
             } else if (!el.getAttributes().isEmpty()) {
-                // Ако няма текст, връщаме стойностите на атрибутите
-                String attrValues = String.join(" ", el.getAttributes().values());
-                results.add(attrValues);
+                results.add(String.join(" ", el.getAttributes().values()));
             }
         }
         return results;
     }
 
-
     private List<XmlElement> getChildrenByStep(XmlElement parent, String step) {
         String tagName = step;
         Integer index = null;
+        String attrKey = null;
+        String attrValue = null;
 
-        // ПРОВЕРКА ЗА ИНДЕКС
+        // Проверка за скоби [...]
         if (step.contains("[") && step.endsWith("]")) {
             tagName = step.substring(0, step.indexOf("["));
-            String indexStr = step.substring(step.indexOf("[") + 1, step.length() - 1);
-            try {
-                index = Integer.parseInt(indexStr);
-            } catch (NumberFormatException e) {
-                index = null;
-            }
-        }
+            String content = step.substring(step.indexOf("[") + 1, step.length() - 1);
 
-        // Събираме всички деца, които съвпадат по име
-        List<XmlElement> sameTagChildren = new ArrayList<>();
-        if (parent.getChildren() != null) {
-            for (XmlElement child : parent.getChildren()) {
-                if (child.getTag().equals(tagName)) {
-                    sameTagChildren.add(child);
+            if (content.contains("=")) {
+                String[] parts = content.split("=");
+                attrKey = parts[0].trim();
+                // Премахваме кавичките около стойността, ако ги има
+                attrValue = parts[1].trim().replace("\"", "").replace("'", "");
+            } else {
+                try {
+                    index = Integer.parseInt(content);
+                } catch (NumberFormatException e) {
+                    index = null;
                 }
             }
         }
 
-        // Ако има валиден индекс, създаваме нов малък списък само с 1 елемент и го връщаме
+        List<XmlElement> candidates = new ArrayList<>();
+        if (parent.getChildren() != null) {
+            for (XmlElement child : parent.getChildren()) {
+                if (child.getTag().equals(tagName)) {
+                    // Филтрираме по атрибут, ако има условие
+                    if (attrKey != null) {
+                        String actualValue = child.getAttributeByKey(attrKey);
+                        if (actualValue != null && actualValue.equals(attrValue)) {
+                            candidates.add(child);
+                        }
+                    } else {
+                        candidates.add(child);
+                    }
+                }
+            }
+        }
+
+        // Връщаме или конкретен индекс, или всички филтрирани кандидати
         if (index != null) {
             List<XmlElement> singleMatch = new ArrayList<>();
-            if (index >= 0 && index < sameTagChildren.size()) {
-                singleMatch.add(sameTagChildren.get(index));
+            if (index >= 0 && index < candidates.size()) {
+                singleMatch.add(candidates.get(index));
             }
             return singleMatch;
         }
 
-        // Ако НЯМА индекс, направо връщаме списъка, който вече напълнихме
-        return sameTagChildren;
+        return candidates;
     }
 }

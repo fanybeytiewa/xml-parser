@@ -13,18 +13,18 @@ public class SetCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 4) {
+        if (getArgs().length < 4) {
             System.out.println("Error: Invalid arguments. Usage: set <id> <key> <value>");
             return;
         }
 
-        String targetId = args[1];
-        String targetKey = args[2];
+        String targetId = getArgs()[1];
+        String targetKey = getArgs()[2];
 
         StringBuilder valueBuilder = new StringBuilder();
-        for (int i = 3; i < args.length; i++) {
-            valueBuilder.append(args[i]);
-            if (i < args.length - 1) {
+        for (int i = 3; i < getArgs().length; i++) {
+            valueBuilder.append(getArgs()[i]);
+            if (i < getArgs().length - 1) {
                 valueBuilder.append(" ");
             }
         }

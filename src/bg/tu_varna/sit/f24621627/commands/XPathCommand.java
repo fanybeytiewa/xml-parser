@@ -18,13 +18,13 @@ public class XPathCommand extends Command {
 
     @Override
     public void execute() {
-        if (args.length < 3) {
+        if (getArgs().length < 3) {
             System.out.println("Usage: xpath <id> <XPath>");
             return;
         }
 
-        String startId = args[1];
-        String path = args[2];
+        String startId = getArgs()[1];
+        String path = getArgs()[2];
 
         XmlElement startNode = document.getElementById(startId);
         if (startNode == null) {
