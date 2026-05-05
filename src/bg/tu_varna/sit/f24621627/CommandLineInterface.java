@@ -42,7 +42,8 @@ public class CommandLineInterface {
 
             if (input.isEmpty()) continue;
 
-            String[] args = input.split(" ");
+// String[] args = input.split(" ");
+            String[] args = input.split("\\s+", 3);
             String commandName = args[0].toLowerCase();
 
             Command command = commands.get(commandName);
