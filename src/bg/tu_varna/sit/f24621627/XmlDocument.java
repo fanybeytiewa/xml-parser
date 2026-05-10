@@ -118,4 +118,10 @@ public class XmlDocument {
             idRegistry.put(newId, element);
         }
     }
+
+    public void removeIdFromRegistry(String id) {
+        if (idRegistry != null) {
+            idRegistry.remove(id);
+        }
+    }
 }

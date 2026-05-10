@@ -51,7 +51,6 @@ public class CommandLineInterface {
                 continue;
             }
 
-            // 2. СПЕЦИАЛНА ЛОГИКА ЗА 'open' (Бъг 2)
             // Ако командата е open, вземаме всичко след името на командата като един аргумент
             if (commandName.equals("open")) {
                 String parts[] = input.split("\\s+", 2); // Цепим само на "open" и "всичко останало"

@@ -26,6 +26,11 @@ public class DeleteCommand extends Command {
             System.out.println("Error: Element with ID '" + targetId + "' not found.");
         } else {
             if (elementToDeleteFrom.getAttributeByKey(targetKey) != null) {
+                // Ако ключът, който трием, е "id", трябва да го махнем и от регистъра на документа
+                if (targetKey.equals("id")) {
+                    document.removeIdFromRegistry(targetId);
+                }
+
                 elementToDeleteFrom.getAttributes().remove(targetKey);
                 System.out.println("Successfully deleted attribute '" + targetKey + "' from element '" + targetId + "'.");
             } else {
