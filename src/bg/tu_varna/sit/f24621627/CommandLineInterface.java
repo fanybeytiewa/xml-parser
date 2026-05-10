@@ -39,18 +39,25 @@ public class CommandLineInterface {
         while (true) {
             System.out.print("> ");
             String input = scanner.nextLine().trim();
-
             if (input.isEmpty()) continue;
 
-// String[] args = input.split(" ");
-            String[] args = input.split("\\s+", 3);
+            // 1. Първо цепим на 4 за общия случай (важно за 'set')
+            String[] args = input.split("\\s+", 4);
             String commandName = args[0].toLowerCase();
 
             Command command = commands.get(commandName);
-
             if (command == null) {
                 System.out.println("Unknown command. Type 'help' to see available commands.");
                 continue;
+            }
+
+            // 2. СПЕЦИАЛНА ЛОГИКА ЗА 'open' (Бъг 2)
+            // Ако командата е open, вземаме всичко след името на командата като един аргумент
+            if (commandName.equals("open")) {
+                String parts[] = input.split("\\s+", 2); // Цепим само на "open" и "всичко останало"
+                if (parts.length > 1) {
+                    args = new String[]{"open", parts[1]};
+                }
             }
 
             if (!commandName.equals("open") && !commandName.equals("help") &&

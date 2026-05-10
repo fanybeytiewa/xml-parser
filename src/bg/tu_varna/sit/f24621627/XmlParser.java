@@ -10,11 +10,11 @@ public class XmlParser {
         int currentIndex = 0;
 
         while (currentIndex < xmlContent.length()) {
-            // search for the next opening bracket
+            // Search for the next opening bracket
             int startBracket = xmlContent.indexOf('<', currentIndex);
             if (startBracket == -1) break;
 
-            // search for text content between the current index and the next opening bracket
+            // Search for text content between the current index and the next opening bracket
             if (startBracket > currentIndex && !stack.isEmpty()) {
                 String text = xmlContent.substring(currentIndex, startBracket).trim();
                 if (!text.isEmpty()) {
@@ -22,24 +22,37 @@ public class XmlParser {
                 }
             }
 
-            // search for the closing bracket of the current tag
+            // Search for the closing bracket of the current tag
             int endBracket = xmlContent.indexOf('>', startBracket);
             if (endBracket == -1) break;
 
-            // get the content of the tag (between < and >)
+            // Get the content of the tag (between < and >)
             String tagContent = xmlContent.substring(startBracket + 1, endBracket).trim();
 
-            // check if it's a closing tag (starts with "/")
+            // Check if it's a closing tag (starts with "/")
             if (tagContent.startsWith("/")) {
-                if (!stack.isEmpty()) {
-                    stack.pop();
+                String closingTagName = tagContent.substring(1).trim();
+
+                // Validation of closing tags
+                if (stack.isEmpty()) {
+                    System.out.println("Error: Closing tag </" + closingTagName + "> has no matching opening tag.");
+                    return null;
                 }
+
+                XmlElement lastOpened = stack.peek();
+                if (!lastOpened.getTag().equals(closingTagName)) {
+                    System.out.println("XML Error: Mismatched tags. Expected </" +
+                            lastOpened.getTag() + "> but found </" + closingTagName + ">");
+                    return null; // Stop parsing on structural error
+                }
+
+                stack.pop();
             } else {
                 boolean isSelfClosing = false;
 
                 if (tagContent.endsWith("/")) {
                     isSelfClosing = true;
-                    // trim the closing "/" from the tag content
+                    // Trim the closing "/" from the tag content
                     tagContent = tagContent.substring(0, tagContent.length() - 1).trim();
                 }
 
@@ -51,13 +64,13 @@ public class XmlParser {
                     stack.peek().addChild(newElement);
                 }
 
-                // put the new element on the stack if it's not self-closing
+                // Put the new element on the stack if it's not self-closing
                 if (!isSelfClosing) {
                     stack.push(newElement);
                 }
             }
 
-            // move the current index to the character after the closing bracket
+            // Move the current index to the character after the closing bracket
             currentIndex = endBracket + 1;
         }
 
@@ -69,7 +82,7 @@ public class XmlParser {
         String tagName;
         String attributesText;
 
-        // split the tag name and the attributes text
+        // Split the tag name and the attributes text
         if (firstSpaceIndex == -1) {
             tagName = innerText;
             attributesText = "";
@@ -80,7 +93,7 @@ public class XmlParser {
 
         XmlElement element = new XmlElement(tagName);
 
-        // get attributes in the format key="value"
+        // Get attributes in the format key="value"
         while (attributesText.contains("=")) {
             int equalsIndex = attributesText.indexOf('=');
             String key = attributesText.substring(0, equalsIndex).trim();

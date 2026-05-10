@@ -12,6 +12,10 @@ public class PrintCommand extends Command {
 
     @Override
     public void execute() {
+        if (document.getRootElement() == null) {
+            System.out.println("Error: No valid XML structure to print.");
+            return;
+        }
         System.out.println(document.getRootElement().toXml(0));
     }
 }

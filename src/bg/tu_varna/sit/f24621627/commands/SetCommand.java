@@ -35,6 +35,16 @@ public class SetCommand extends Command {
         if (elementToSet == null) {
             System.out.println("Error: Element with ID '" + targetId + "' not found.");
         } else {
+            // Ако променяме самото ID
+            if (targetKey.equals("id")) {
+                // Проверка дали новото ID вече не е заето
+                if (document.getElementById(targetValue) != null) {
+                    System.out.println("Error: ID '" + targetValue + "' is already taken.");
+                    return;
+                }
+                document.updateIdInRegistry(targetId, targetValue, elementToSet);
+            }
+
             elementToSet.addAttribute(targetKey, targetValue);
             System.out.println("Successfully set attribute '" + targetKey + "' to '" + targetValue + "' for element '" + targetId + "'.");
         }

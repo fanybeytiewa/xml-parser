@@ -18,7 +18,5 @@ public abstract class Command {
         this.args = args;
     }
 
-
-
     public abstract void execute();
 }

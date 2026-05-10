@@ -55,10 +55,19 @@ public class XmlElement {
         return this.children;
     }
 
+    private String escapeXml(String input) {
+        if (input == null) return "";
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
+
     public String toXml(int indentLevel) {
         StringBuilder sb = new StringBuilder();
 
-        // 4 spaces for each level of indentation
+        // 4 интервала за всяко ниво на навътре (indentation)
         String spaces = "";
         for (int i = 0; i < indentLevel; i++) {
             spaces += "    ";
@@ -66,22 +75,24 @@ public class XmlElement {
 
         sb.append(spaces).append("<").append(tag);
 
-        //add attributes if they exist
+        // Ескейпваме стойностите на атрибутите
         for (String key : attributes.keySet()) {
-            sb.append(" ").append(key).append("=\"").append(attributes.get(key)).append("\"");
+            sb.append(" ")
+                    .append(key)
+                    .append("=\"")
+                    .append(escapeXml(attributes.get(key)))
+                    .append("\"");
         }
         sb.append(">");
 
-        // add text content if it exists, otherwise add children
+        // Ескейпваме текстовото съдържание
         if (textContent != null && !textContent.isEmpty()) {
-            sb.append(textContent);
+            sb.append(escapeXml(textContent));
         } else if (!children.isEmpty()) {
             sb.append("\n");
-            // recursively call toXml on children with increased indent level
             for (XmlElement child : children) {
                 sb.append(child.toXml(indentLevel + 1));
             }
-            // add indentation for closing tag
             sb.append(spaces);
         }
 

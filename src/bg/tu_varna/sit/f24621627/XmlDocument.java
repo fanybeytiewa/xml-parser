@@ -25,14 +25,24 @@ public class XmlDocument {
 
     public void open(String filePath) {
         try {
-            // read as string
             String content = Files.readString(Path.of(filePath));
 
             XmlParser parser = new XmlParser();
-            this.rootElement = parser.parse(content);
+            XmlElement parsedRoot = parser.parse(content);
+
+            // ПРОВЕРКА: Ако парсърът е върнал null, значи е имало грешка (напр. Mismatched tags)
+            if (parsedRoot == null) {
+                this.rootElement = null;
+                this.isFileOpened = false;
+                // Не печатаме успех, защото парсърът вече е изписал своята грешка
+                return;
+            }
+
+            this.rootElement = parsedRoot;
+
+            // Присвояваме ID-тата само ако имаме валиден корен
             IdAssigner assigner = new IdAssigner();
             this.idRegistry = assigner.assignIds(this.rootElement);
-
 
             this.currentFilePath = filePath;
             this.isFileOpened = true;
@@ -40,8 +50,9 @@ public class XmlDocument {
 
         } catch (IOException e) {
             System.out.println("Error: Could not read file " + filePath + ". Make sure the file exists.");
+            this.isFileOpened = false;
         } catch (Exception e) {
-            System.out.println("Error: Failed to parse XML file. It might be invalid.");
+            System.out.println("Error: Failed to open XML file. " + e.getMessage());
             this.rootElement = null;
             this.isFileOpened = false;
         }
@@ -99,5 +110,12 @@ public class XmlDocument {
             return idRegistry.get(id);
         }
         return null;
+    }
+
+    public void updateIdInRegistry(String oldId, String newId, XmlElement element) {
+        if (idRegistry.containsKey(oldId)) {
+            idRegistry.remove(oldId);
+            idRegistry.put(newId, element);
+        }
     }
 }
