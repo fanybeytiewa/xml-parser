@@ -5,6 +5,7 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 import java.util.Map;
 
+/** Command for accessing the n-th child of an element. */
 public class ChildCommand extends Command {
     private XmlDocument document;
 
@@ -45,14 +46,10 @@ public class ChildCommand extends Command {
         }
 
         XmlElement child = element.getChildren().get(listIndex);
-        StringBuilder attrText = new StringBuilder();
-        if (child.getAttributes() != null) {
-            for (Map.Entry<String, String> entry : child.getAttributes().entrySet()) {
-                attrText.append(entry.getKey()).append("=\"").append(entry.getValue()).append("\" ");
-            }
-        }
 
         System.out.println("Child " + n + " of element '" + targetId + "':");
-        System.out.println(child.getTag() + " -> " + attrText.toString().trim());
+
+        // Подаваме 0 за indentLevel, за да го принтира без излишни интервали в началото.
+        System.out.println(child.toXml(0).trim());
     }
 }

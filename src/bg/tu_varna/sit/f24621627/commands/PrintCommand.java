@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621627.commands;
 
 import bg.tu_varna.sit.f24621627.XmlDocument;
 
+/** Command for printing formatted XML to the console. */
 public class PrintCommand extends Command {
     private XmlDocument document;
 

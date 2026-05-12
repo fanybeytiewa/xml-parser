@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621627.commands;
 
 import bg.tu_varna.sit.f24621627.XmlDocument;
 
+/** Command for closing the currently opened document. */
 public class CloseCommand extends Command {
     private XmlDocument document;
 

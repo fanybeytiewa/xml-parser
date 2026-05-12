@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621627.commands;
 
 import java.util.Map;
 
+/** Command for displaying help information about all available commands. */
 public class HelpCommand extends Command {
     private Map<String, Command> commands;
 

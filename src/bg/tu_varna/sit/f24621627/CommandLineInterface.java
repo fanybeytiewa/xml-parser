@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Command line interface (CLI) for working with XML documents.
+ * Registers available commands and processes user input from the console.
+ */
 public class CommandLineInterface {
 
     private XmlDocument document = new XmlDocument();
@@ -13,7 +17,7 @@ public class CommandLineInterface {
     private Map<String, Command> commands = new HashMap<>();
 
     public CommandLineInterface() {
-        // Регистрираме всички обекти-команди в речника
+        // Register all command objects in the map
         commands.put("open", new OpenCommand(document));
         commands.put("close", new CloseCommand(document));
         commands.put("save", new SaveCommand(document));
@@ -28,10 +32,11 @@ public class CommandLineInterface {
         commands.put("xpath", new XPathCommand(document, xpathService));
         commands.put("exit", new ExitCommand());
 
-        // Подаваме мапа на HelpCommand, за да може сам да си генерира менюто
+        // Pass the commands map to HelpCommand so it can generate the menu
         commands.put("help", new HelpCommand(commands));
     }
 
+    /** Starts the command reading loop from the user. */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to XML Parser. Type 'help' for commands.");
@@ -41,7 +46,7 @@ public class CommandLineInterface {
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) continue;
 
-            // 1. Първо цепим на 4 за общия случай (важно за 'set')
+            // Split into max 4 parts for the general case (important for set)
             String[] args = input.split("\\s+", 4);
             String commandName = args[0].toLowerCase();
 
@@ -51,11 +56,19 @@ public class CommandLineInterface {
                 continue;
             }
 
-            // Ако командата е open, вземаме всичко след името на командата като един аргумент
+            // If the command is open, take everything after the command name as one argument
             if (commandName.equals("open")) {
-                String parts[] = input.split("\\s+", 2); // Цепим само на "open" и "всичко останало"
+                String parts[] = input.split("\\s+", 2); // Split into "open" and "everything else"
                 if (parts.length > 1) {
                     args = new String[]{"open", parts[1]};
+                }
+            }
+
+            // If the command is save as, take the path as one argument (may contain spaces)
+            if (commandName.equals("save") && args.length > 1 && args[1].equalsIgnoreCase("as")) {
+                String[] parts = input.split("\\s+", 3); // Split into "save", "as" and "everything else"
+                if (parts.length >= 3) {
+                    args = new String[]{"save", "as", parts[2]};
                 }
             }
 

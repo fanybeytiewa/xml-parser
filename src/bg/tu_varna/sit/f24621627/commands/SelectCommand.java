@@ -3,6 +3,7 @@ package bg.tu_varna.sit.f24621627.commands;
 import bg.tu_varna.sit.f24621627.XmlDocument;
 import bg.tu_varna.sit.f24621627.XmlElement;
 
+/** Command for selecting an attribute value by element ID and key. */
 public class SelectCommand extends Command {
     private XmlDocument document;
 

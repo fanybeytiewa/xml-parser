@@ -3,6 +3,7 @@ package bg.tu_varna.sit.f24621627.commands;
 import bg.tu_varna.sit.f24621627.XmlDocument;
 import bg.tu_varna.sit.f24621627.XmlElement;
 
+/** Command for printing the text content of an element. */
 public class TextCommand extends Command {
     private XmlDocument document;
 

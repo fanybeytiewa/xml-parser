@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621627.commands;
 
 import bg.tu_varna.sit.f24621627.XmlDocument;
 
+/** Command for saving the document (save or save as). */
 public class SaveCommand extends Command {
     private XmlDocument document;
 

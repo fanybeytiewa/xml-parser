@@ -2,9 +2,19 @@ package bg.tu_varna.sit.f24621627;
 
 import java.util.Stack;
 
+/**
+ * Parses an XML string and builds a tree structure from {@link XmlElement} objects.
+ * Does not use external libraries — the implementation is entirely manual.
+ */
 public class XmlParser {
 
-    public XmlElement parse(String xmlContent) {
+    /**
+     * Parses an XML string and returns the root element.
+     * @param xmlContent the XML content as a string
+     * @return the root element of the parsed tree
+     * @throws XmlParseException if the XML structure is invalid
+     */
+    public XmlElement parse(String xmlContent) throws XmlParseException {
         Stack<XmlElement> stack = new Stack<>();
         XmlElement root = null;
         int currentIndex = 0;
@@ -35,15 +45,13 @@ public class XmlParser {
 
                 // Validation of closing tags
                 if (stack.isEmpty()) {
-                    System.out.println("Error: Closing tag </" + closingTagName + "> has no matching opening tag.");
-                    return null;
+                    throw new XmlParseException("Closing tag </" + closingTagName + "> has no matching opening tag.");
                 }
 
                 XmlElement lastOpened = stack.peek();
                 if (!lastOpened.getTag().equals(closingTagName)) {
-                    System.out.println("XML Error: Mismatched tags. Expected </" +
+                    throw new XmlParseException("Mismatched tags. Expected </" +
                             lastOpened.getTag() + "> but found </" + closingTagName + ">");
-                    return null; // Stop parsing on structural error
                 }
 
                 stack.pop();

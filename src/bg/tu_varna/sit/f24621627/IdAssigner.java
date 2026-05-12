@@ -3,10 +3,20 @@ package bg.tu_varna.sit.f24621627;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Assigns unique identifiers to all elements in the XML tree.
+ * If an element has an id but it is not unique — appends a suffix ( e.g. "1_1", "1_2").
+ * If an element has no id — generates a new one ( e.g. "gen-1", "gen-2").
+ */
 public class IdAssigner {
 
     private int generatedIdCounter = 1;
 
+    /**
+     * Assigns unique IDs to all elements and returns a registry.
+     * @param root the root element of the document (can be null)
+     * @return map of id to element for fast lookup
+     */
     public Map<String, XmlElement> assignIds(XmlElement root) {
         if (root == null) return new HashMap<>();
 

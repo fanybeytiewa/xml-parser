@@ -2,6 +2,7 @@ package bg.tu_varna.sit.f24621627.commands;
 
 import bg.tu_varna.sit.f24621627.XmlDocument;
 
+/** Command for opening an XML file. */
 public class OpenCommand extends Command {
     private XmlDocument document;
 

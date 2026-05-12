@@ -3,6 +3,7 @@ package bg.tu_varna.sit.f24621627.commands;
 import bg.tu_varna.sit.f24621627.XmlDocument;
 import bg.tu_varna.sit.f24621627.XmlElement;
 
+/** Command for deleting an attribute from an element by ID and key. */
 public class DeleteCommand extends Command {
     private XmlDocument document;
 
@@ -26,12 +27,12 @@ public class DeleteCommand extends Command {
             System.out.println("Error: Element with ID '" + targetId + "' not found.");
         } else {
             if (elementToDeleteFrom.getAttributeByKey(targetKey) != null) {
-                // Ако ключът, който трием, е "id", трябва да го махнем и от регистъра на документа
+                // If the key being deleted is "id", also remove it from the document registry
                 if (targetKey.equals("id")) {
                     document.removeIdFromRegistry(targetId);
                 }
 
-                elementToDeleteFrom.getAttributes().remove(targetKey);
+                elementToDeleteFrom.removeAttribute(targetKey);
                 System.out.println("Successfully deleted attribute '" + targetKey + "' from element '" + targetId + "'.");
             } else {
                 System.out.println("Error: Attribute '" + targetKey + "' not found in element '" + targetId + "'.");

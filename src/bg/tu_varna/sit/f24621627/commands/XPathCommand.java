@@ -6,6 +6,7 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 import java.util.List;
 
+/** Command for executing an XPath query on an XML document. */
 public class XPathCommand extends Command {
     private XmlDocument document;
     private XPathService xpathService;
