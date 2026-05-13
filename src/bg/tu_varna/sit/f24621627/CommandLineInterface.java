@@ -12,10 +12,16 @@ import java.util.Scanner;
  */
 public class CommandLineInterface {
 
+    /** The XML document being operated on. */
     private XmlDocument document = new XmlDocument();
+
+    /** Service for evaluating XPath queries. */
     private XPathService xpathService = new XPathService();
+
+    /** Map of command names to their implementations. */
     private Map<String, Command> commands = new HashMap<>();
 
+    /** Registers all available commands in the command map. */
     public CommandLineInterface() {
         // Register all command objects in the map
         commands.put("open", new OpenCommand(document));

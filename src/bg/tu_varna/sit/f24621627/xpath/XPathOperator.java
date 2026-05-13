@@ -14,11 +14,16 @@ public abstract class XPathOperator {
 
     /**
      * Checks whether this operator can handle the given step.
+     * @param step the XPath step expression
+     * @return true if this operator can process the step
      */
     public abstract boolean canHandle(String step);
 
     /**
      * Applies the operator to a list of parent elements.
+     * @param parents the parent elements to process
+     * @param step the XPath step expression
+     * @return list of matching child elements
      */
     public abstract List<XmlElement> apply(List<XmlElement> parents, String step);
 

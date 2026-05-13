@@ -7,13 +7,19 @@ import java.util.Map;
 
 /** Command for accessing the n-th child of an element. */
 public class ChildCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
 
+    /**
+     * Creates a new ChildCommand.
+     * @param document the XML document to operate on
+     */
     public ChildCommand(XmlDocument document) {
         super("child", "child <id> <n>\t\tprints the n-th child of an element");
         this.document = document;
     }
 
+    /** Prints the n-th child of an element. */
     @Override
     public void execute() {
         if (getArgs().length < 3) {
@@ -49,7 +55,7 @@ public class ChildCommand extends Command {
 
         System.out.println("Child " + n + " of element '" + targetId + "':");
 
-        // Подаваме 0 за indentLevel, за да го принтира без излишни интервали в началото.
-        System.out.println(child.toXml(0).trim());
+        // Print with indent 0 and trim for clean output
+        System.out.println(document.getSerializer().serialize(child, 0).trim());
     }
 }

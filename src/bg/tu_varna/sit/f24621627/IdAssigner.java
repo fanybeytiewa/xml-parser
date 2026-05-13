@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class IdAssigner {
 
+    /** Counter for generating unique IDs (gen-1, gen-2, ...). */
     private int generatedIdCounter = 1;
 
     /**
@@ -35,7 +36,11 @@ public class IdAssigner {
         return registry;
     }
 
-    // idFrequency is updated with counts of each id value found in the document
+    /**
+     * Recursively counts how many times each ID appears in the tree.
+     * @param element the current element being examined
+     * @param idFrequency map to update with ID occurrence counts
+     */
     private void collectIdFrequencies(XmlElement element, Map<String, Integer> idFrequency) {
         String id = element.getId();
         if (id != null && !id.isEmpty()) {
@@ -46,7 +51,14 @@ public class IdAssigner {
         }
     }
 
-    //idFrequency decides what to do, idCounters track suffixes
+    /**
+     * Recursively assigns unique IDs to elements, adding suffixes for duplicates
+     * and generating new IDs for elements without one.
+     * @param element the current element being processed
+     * @param idFrequency map of original ID occurrence counts
+     * @param idCounters map tracking suffix counters for duplicate IDs
+     * @param registry output map of final ID to element mappings
+     */
     private void assignUniqueIds(XmlElement element, Map<String, Integer> idFrequency, Map<String, Integer> idCounters, Map<String, XmlElement> registry) {
         String rawId = element.getId();
 

@@ -8,15 +8,23 @@ import java.util.List;
 
 /** Command for executing an XPath query on an XML document. */
 public class XPathCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
+    /** Service for evaluating XPath expressions. */
     private XPathService xpathService;
 
+    /**
+     * Creates a new XPathCommand.
+     * @param document the XML document to operate on
+     * @param xpathService the XPath evaluation service
+     */
     public XPathCommand(XmlDocument document, XPathService xpathService) {
         super("xpath", "xpath <id> <path>\texecutes XPath query");
         this.document = document;
         this.xpathService = xpathService;
     }
 
+    /** Evaluates an XPath query and prints the results. */
     @Override
     public void execute() {
         if (getArgs().length < 3) {

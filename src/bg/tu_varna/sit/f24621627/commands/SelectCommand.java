@@ -5,13 +5,19 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 /** Command for selecting an attribute value by element ID and key. */
 public class SelectCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
 
+    /**
+     * Creates a new SelectCommand.
+     * @param document the XML document to operate on
+     */
     public SelectCommand(XmlDocument document) {
         super("select", "select <id> <key>\tselects an attribute from an element");
         this.document = document;
     }
 
+    /** Selects and prints an attribute value from an element. */
     @Override
     public void execute() {
         if (getArgs().length < 3) {

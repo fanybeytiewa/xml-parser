@@ -1,32 +1,50 @@
 package bg.tu_varna.sit.f24621627;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 
 /**
  * Represents an XML document.
- * Manages opening, closing, and saving XML files
- * and provides access to elements via an ID registry.
+ * Manages the document state (root element, ID registry) and
+ * delegates file operations to {@link FileHandler} and
+ * serialization to {@link XmlSerializer}.
  */
 public class XmlDocument {
+    /** Path to the currently opened file. */
     private String currentFilePath;
-    private XmlElement rootElement; // main tag
+
+    /** Root element of the XML tree. */
+    private XmlElement rootElement;
+
+    /** Whether a file is currently opened. */
     private boolean isFileOpened;
 
+    /** Registry mapping unique IDs to their corresponding elements. */
     private Map<String, XmlElement> idRegistry;
 
+    /** Serializer for converting elements to XML strings. */
+    private final XmlSerializer serializer;
+
+    /** Handler for file system operations (read, write, create). */
+    private final FileHandler fileHandler;
+
+    /** Initializes the document with no file opened and creates service instances. */
     public XmlDocument() {
         this.isFileOpened = false;
         this.currentFilePath = null;
         this.rootElement = null;
+        this.serializer = new XmlSerializer();
+        this.fileHandler = new FileHandler();
     }
 
     /** @return the ID registry */
     public Map<String, XmlElement> getIdRegistry() {
         return idRegistry;
+    }
+
+    /** @return the XML serializer instance */
+    public XmlSerializer getSerializer() {
+        return serializer;
     }
 
     /**
@@ -41,55 +59,45 @@ public class XmlDocument {
         }
 
         try {
-            Path path = Path.of(filePath);
+            String content = loadFileContent(filePath);
+            XmlElement parsedRoot = (content != null) ? parseContent(content) : null;
 
-            // If the file does not exist, create a new empty file
-            if (!Files.exists(path)) {
-                Files.createFile(path);
-                this.currentFilePath = filePath;
-                this.rootElement = null;
-                this.idRegistry = buildIdRegistry(null);
-                this.isFileOpened = true;
-                System.out.println("Successfully created and opened new file " + filePath);
-                return;
-            }
-
-            String content = Files.readString(path);
-
-            // If the file is empty, open it without parsing
-            if (content.trim().isEmpty()) {
-                this.currentFilePath = filePath;
-                this.rootElement = null;
-                this.idRegistry = buildIdRegistry(null);
-                this.isFileOpened = true;
-                System.out.println("Successfully opened " + filePath);
-                return;
-            }
-
-            // Create objects via factory methods
-            XmlElement parsedRoot = parseContent(content);
-
-            this.rootElement = parsedRoot;
-
-            // Assign IDs only if we have a valid root
-            this.idRegistry = buildIdRegistry(this.rootElement);
-
-            this.currentFilePath = filePath;
-            this.isFileOpened = true;
+            initDocument(filePath, parsedRoot);
             System.out.println("Successfully opened " + filePath);
 
         } catch (XmlParseException e) {
             System.out.println("XML Error: " + e.getMessage());
-            this.rootElement = null;
-            this.isFileOpened = false;
         } catch (IOException e) {
             System.out.println("Error: Could not read file " + filePath + ". " + e.getMessage());
-            this.isFileOpened = false;
-        } catch (Exception e) {
-            System.out.println("Error: Failed to open XML file. " + e.getMessage());
-            this.rootElement = null;
-            this.isFileOpened = false;
         }
+    }
+
+    /**
+     * Loads the file content, creating the file if it does not exist.
+     * @param filePath path to the file
+     * @return the file content, or null if the file is new or empty
+     * @throws IOException if the file cannot be read or created
+     */
+    private String loadFileContent(String filePath) throws IOException {
+        if (!fileHandler.fileExists(filePath)) {
+            fileHandler.createFile(filePath);
+            return null;
+        }
+
+        String content = fileHandler.readFile(filePath);
+        return content.trim().isEmpty() ? null : content;
+    }
+
+    /**
+     * Initializes the document state with the given file path and root element.
+     * @param filePath the path to the file
+     * @param root the root element (can be null for empty documents)
+     */
+    private void initDocument(String filePath, XmlElement root) {
+        this.currentFilePath = filePath;
+        this.rootElement = root;
+        this.idRegistry = buildIdRegistry(root);
+        this.isFileOpened = true;
     }
 
     /** Closes the currently opened document and releases resources. */
@@ -119,15 +127,11 @@ public class XmlDocument {
             return;
         }
 
-        try (FileWriter writer = new FileWriter(newFilePath)) {
-
-            String xmlContent = rootElement.toXml(0);
-
-            writer.write(xmlContent);
-
+        try {
+            String xmlContent = serializer.serialize(rootElement, 0);
+            fileHandler.writeFile(newFilePath, xmlContent);
             this.currentFilePath = newFilePath;
             System.out.println("Successfully saved " + newFilePath);
-
         } catch (IOException e) {
             System.out.println("Error saving file: Could not write to " + newFilePath);
         }

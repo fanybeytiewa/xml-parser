@@ -5,13 +5,19 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 /** Command for setting an attribute value. */
 public class SetCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
 
+    /**
+     * Creates a new SetCommand.
+     * @param document the XML document to operate on
+     */
     public SetCommand(XmlDocument document) {
         super("set", "set <id> <key> <val>\tsets attribute value");
         this.document = document;
     }
 
+    /** Sets an attribute value on an element. */
     @Override
     public void execute() {
         if (getArgs().length < 4) {

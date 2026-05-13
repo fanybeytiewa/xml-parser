@@ -5,13 +5,19 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 /** Command for printing the text content of an element. */
 public class TextCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
 
+    /**
+     * Creates a new TextCommand.
+     * @param document the XML document to operate on
+     */
     public TextCommand(XmlDocument document) {
         super("text", "text <id>\t\t\tprints the text content of an element");
         this.document = document;
     }
 
+    /** Prints the text content of an element. */
     @Override
     public void execute() {
         if (getArgs().length < 2) {

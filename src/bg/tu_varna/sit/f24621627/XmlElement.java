@@ -8,9 +8,16 @@ import java.util.Collections;
  * Contains a tag, text content, attributes and nested child elements.
  */
 public class XmlElement {
+    /** The tag name of the element (e.g. "book", "title"). */
     private String tag;
+
+    /** The text content between the opening and closing tags. */
     private String textContent;
+
+    /** Map of attribute key-value pairs. Uses LinkedHashMap to preserve order. */
     private Map<String, String> attributes;
+
+    /** List of nested child elements. */
     private List<XmlElement> children;
 
     /**
@@ -116,54 +123,19 @@ public class XmlElement {
         return Collections.unmodifiableList(this.children);
     }
 
-    private String escapeXml(String input) {
-        if (input == null) return "";
-        return input.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "&apos;");
-    }
-
     /**
-     * Serializes the element and its children to a formatted XML string.
-     * @param indentLevel the indentation level (0 for root)
-     * @return formatted XML string
+     * Returns a human-readable summary of this element.
+     * Useful for debugging and logging.
+     * Example: XmlElement{tag='book', id='1', attributes=2, children=3}
+     * @return string representation of the element
      */
-    public String toXml(int indentLevel) {
-        StringBuilder sb = new StringBuilder();
-
-        // 4 spaces per indentation level
-        String spaces = "";
-        for (int i = 0; i < indentLevel; i++) {
-            spaces += "    ";
-        }
-
-        sb.append(spaces).append("<").append(tag);
-
-        // Escape attribute values
-        for (String key : attributes.keySet()) {
-            sb.append(" ")
-                    .append(key)
-                    .append("=\"")
-                    .append(escapeXml(attributes.get(key)))
-                    .append("\"");
-        }
-        sb.append(">");
-
-        // Escape text content
-        if (textContent != null && !textContent.isEmpty()) {
-            sb.append(escapeXml(textContent));
-        } else if (!children.isEmpty()) {
-            sb.append("\n");
-            for (XmlElement child : children) {
-                sb.append(child.toXml(indentLevel + 1));
-            }
-            sb.append(spaces);
-        }
-
-        sb.append("</").append(tag).append(">\n");
-
-        return sb.toString();
+    @Override
+    public String toString() {
+        return "XmlElement{tag='" + tag + "'" +
+                ", id='" + getId() + "'" +
+                ", attributes=" + attributes.size() +
+                ", children=" + children.size() +
+                "}";
     }
 }
+

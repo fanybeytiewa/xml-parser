@@ -5,14 +5,20 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 /** Command for adding a new child element. */
 public class NewChildCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
     private int newChildCounter = 1; // Counter for generating new child IDs
 
+    /**
+     * Creates a new NewChildCommand.
+     * @param document the XML document to operate on
+     */
     public NewChildCommand(XmlDocument document) {
         super("newchild", "newchild <id>\t\tadds a new child element");
         this.document = document;
     }
 
+    /** Adds a new child element to an existing element. */
     @Override
     public void execute() {
         if (getArgs().length < 2) {

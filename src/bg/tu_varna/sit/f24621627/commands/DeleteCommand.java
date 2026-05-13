@@ -5,13 +5,19 @@ import bg.tu_varna.sit.f24621627.XmlElement;
 
 /** Command for deleting an attribute from an element by ID and key. */
 public class DeleteCommand extends Command {
+    /** Reference to the XML document being operated on. */
     private XmlDocument document;
 
+    /**
+     * Creates a new DeleteCommand.
+     * @param document the XML document to operate on
+     */
     public DeleteCommand(XmlDocument document) {
         super("delete", "delete <id> <key>\tdeletes an attribute from an element");
         this.document = document;
     }
 
+    /** Deletes an attribute from an element. */
     @Override
     public void execute() {
         if (getArgs().length < 3) {

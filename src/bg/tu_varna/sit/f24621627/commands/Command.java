@@ -6,8 +6,13 @@ package bg.tu_varna.sit.f24621627.commands;
  * Uses the Command Pattern.
  */
 public abstract class Command {
+    /** The command name used for lookup (e.g. "open", "save"). */
     private String name;
+
+    /** Description text displayed in the help menu. */
     private String description;
+
+    /** Command line arguments passed during execution. */
     private String[] args;
 
     /**
