@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +28,13 @@ public abstract class XPathOperator {
     public abstract List<XmlElement> apply(List<XmlElement> parents, String step);
 
     /**
-     * Shared method — finds all children with a given tag.
+     * Shared method — finds nodes resolving both axis and tag name.
      * Subclasses use it for navigation before their specific processing.
+     * @param parents the parent elements
+     * @param stepBase the string that might contain an axis (e.g., "ancestor::book")
+     * @return list of matching elements
      */
-    protected List<XmlElement> findChildrenByTag(List<XmlElement> parents, String tagName) {
-        List<XmlElement> result = new ArrayList<>();
-        for (XmlElement parent : parents) {
-            if (parent.getChildren() != null) {
-                for (XmlElement child : parent.getChildren()) {
-                    if (child.getTag().equals(tagName)) {
-                        result.add(child);
-                    }
-                }
-            }
-        }
-        return result;
+    protected List<XmlElement> resolveAxisAndTag(List<XmlElement> parents, String stepBase) {
+        return AxisResolver.resolve(parents, stepBase);
     }
 }

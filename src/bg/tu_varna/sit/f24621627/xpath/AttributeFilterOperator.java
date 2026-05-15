@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +43,8 @@ public class AttributeFilterOperator extends XPathOperator {
             filterValue = parts[1].trim().replaceAll("^[\"']|[\"']$", "");
         }
 
-        // First navigate by tag, then filter
-        List<XmlElement> matches = findChildrenByTag(parents, tagName);
+        // First navigate by axis and tag, then filter
+        List<XmlElement> matches = resolveAxisAndTag(parents, tagName);
 
         if (filterKey != null) {
             matches = filterByAttribute(matches, filterKey, filterValue);

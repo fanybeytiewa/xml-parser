@@ -1,9 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
-
-import java.util.Map;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for accessing the n-th child of an element. */
 public class ChildCommand extends Command {
@@ -15,7 +13,7 @@ public class ChildCommand extends Command {
      * @param document the XML document to operate on
      */
     public ChildCommand(XmlDocument document) {
-        super("child", "child <id> <n>\t\tprints the n-th child of an element");
+        super("child", "<id> <n>", "prints the n-th child of an element");
         this.document = document;
     }
 
@@ -54,8 +52,6 @@ public class ChildCommand extends Command {
         XmlElement child = element.getChildren().get(listIndex);
 
         System.out.println("Child " + n + " of element '" + targetId + "':");
-
-        // Print with indent 0 and trim for clean output
-        System.out.println(document.getSerializer().serialize(child, 0).trim());
+        System.out.println(child.toString());
     }
 }

@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.ArrayList;
 import java.util.List;

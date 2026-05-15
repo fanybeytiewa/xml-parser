@@ -1,4 +1,7 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.parsers;
+
+import bg.tu_varna.sit.f24621627.models.XmlElement;
+import bg.tu_varna.sit.f24621627.exceptions.XmlParseException;
 
 import java.util.Stack;
 

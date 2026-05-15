@@ -1,4 +1,6 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.parsers;
+
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /**
  * Parses an XML tag that contains attributes.

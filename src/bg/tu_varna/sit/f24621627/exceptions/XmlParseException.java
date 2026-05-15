@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.exceptions;
 
 /**
  * Exception for XML parsing errors.

@@ -12,7 +12,7 @@ public class HelpCommand extends Command {
      * @param commands map of available commands
      */
     public HelpCommand(Map<String, Command> commands) {
-        super("help", "help \t\t\tprints this information");
+        super("help", "", "prints this information");
         this.commands = commands;
     }
 
@@ -21,7 +21,7 @@ public class HelpCommand extends Command {
     public void execute() {
         System.out.println("The following commands are supported:");
         for (Command cmd : commands.values()) {
-            System.out.println(cmd.getDescription());
+            System.out.printf("%-25s - %s%n", cmd.getSyntax(), cmd.getDescription());
         }
     }
 }

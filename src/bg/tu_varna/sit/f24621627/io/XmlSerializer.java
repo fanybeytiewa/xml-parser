@@ -1,4 +1,6 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.io;
+
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /**
  * Serializes an {@link XmlElement} tree into a formatted XML string.

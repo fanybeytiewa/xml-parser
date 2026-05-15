@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
 
 /** Command for closing the currently opened document. */
 public class CloseCommand extends Command {
@@ -12,7 +12,7 @@ public class CloseCommand extends Command {
      * @param document the XML document to operate on
      */
     public CloseCommand(XmlDocument document) {
-        super("close", "close\t\t\t closes currently opened file");
+        super("close", "", "closes currently opened file");
         this.document = document;
     }
 

@@ -10,6 +10,10 @@ public abstract class Command {
     private String name;
 
     /** Description text displayed in the help menu. */
+    /** The syntax usage of the command. */
+    private String argsSyntax;
+
+    /** Description text displayed in the help menu. */
     private String description;
 
     /** Command line arguments passed during execution. */
@@ -20,8 +24,9 @@ public abstract class Command {
      * @param name the command name ( e.g. "open", "save")
      * @param description description for the help menu
      */
-    public Command(String name, String description) {
+    public Command(String name, String argsSyntax, String description) {
         this.name = name;
+        this.argsSyntax = argsSyntax;
         this.description = description;
     }
 
@@ -30,6 +35,9 @@ public abstract class Command {
 
     /** @return the command description */
     public String getDescription() { return description; }
+
+    /** @return the command syntax */
+    public String getSyntax() { return (argsSyntax == null || argsSyntax.isEmpty()) ? name : name + " " + argsSyntax; }
 
     /** @return the arguments passed to the command */
     public String[] getArgs() { return args; }

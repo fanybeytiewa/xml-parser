@@ -1,8 +1,8 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XPathService;
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.xpath.XPathService;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class XPathCommand extends Command {
      * @param xpathService the XPath evaluation service
      */
     public XPathCommand(XmlDocument document, XPathService xpathService) {
-        super("xpath", "xpath <id> <path>\texecutes XPath query");
+        super("xpath", "<id> <path>", "executes XPath query");
         this.document = document;
         this.xpathService = xpathService;
     }

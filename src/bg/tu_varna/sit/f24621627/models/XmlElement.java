@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.models;
 
 import java.util.*;
 import java.util.Collections;
@@ -20,6 +20,9 @@ public class XmlElement {
     /** List of nested child elements. */
     private List<XmlElement> children;
 
+    /** Parent element (null if this is the root element). */
+    private XmlElement parent;
+
     /**
      * Creates a new XML element with the given tag name.
      * @param tag the tag name (cannot be null or empty)
@@ -33,6 +36,7 @@ public class XmlElement {
         this.textContent = "";
         this.attributes = new LinkedHashMap<>();
         this.children = new ArrayList<>();
+        this.parent = null;
     }
 
     /** @return the tag name */
@@ -108,11 +112,73 @@ public class XmlElement {
     }
 
     /**
-     * Adds a child element.
+     * Adds a child element and automatically sets its parent to this element.
      * @param child the element to add
      */
     public void addChild(XmlElement child) {
+        child.setParent(this);
         this.children.add(child);
+    }
+
+    /** @return the parent element, or null if root */
+    public XmlElement getParent() {
+        return parent;
+    }
+
+    /**
+     * Sets the parent element.
+     * @param parent the parent element
+     */
+    public void setParent(XmlElement parent) {
+        this.parent = parent;
+    }
+
+    /**
+     * Extracts the namespace prefix from the tag name.
+     * @return the prefix, or an empty string if there is no prefix
+     */
+    public String getNamespacePrefix() {
+        if (tag != null && tag.contains(":")) {
+            return tag.substring(0, tag.indexOf(":"));
+        }
+        return "";
+    }
+
+    /**
+     * Extracts the local name from the tag name (without the namespace prefix).
+     * @return the local name
+     */
+    public String getLocalName() {
+        if (tag != null && tag.contains(":")) {
+            return tag.substring(tag.indexOf(":") + 1);
+        }
+        return tag;
+    }
+
+    /**
+     * Resolves the namespace URI for a given prefix.
+     * Searches attributes of this element, then recursively asks the parent.
+     * @param prefix the namespace prefix (or empty string for default namespace)
+     * @return the namespace URI, or null if not found
+     */
+    public String getNamespaceURI(String prefix) {
+        String attrKey = (prefix == null || prefix.isEmpty()) ? "xmlns" : "xmlns:" + prefix;
+        String uri = getAttributeByKey(attrKey);
+        
+        if (uri != null) {
+            return uri;
+        } else if (parent != null) {
+            return parent.getNamespaceURI(prefix);
+        }
+        return null;
+    }
+
+    /**
+     * Returns the namespace URI associated with this element's tag.
+     * @return the namespace URI, or null if not defined
+     */
+    public String getNamespaceURI() {
+        return getNamespaceURI(getNamespacePrefix());
     }
 
     /**
@@ -131,11 +197,11 @@ public class XmlElement {
      */
     @Override
     public String toString() {
-        return "XmlElement{tag='" + tag + "'" +
-                ", id='" + getId() + "'" +
-                ", attributes=" + attributes.size() +
-                ", children=" + children.size() +
-                "}";
+        return "XmlElement { tag = '" + tag + "'" +
+                ", id = '" + getId() + "'" +
+                ", attributes count = " + attributes.size() +
+                ", children count = " + children.size() +
+                " }";
     }
 }
 

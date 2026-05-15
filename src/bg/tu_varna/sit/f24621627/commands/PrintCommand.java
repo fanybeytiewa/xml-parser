@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
 
 /** Command for printing formatted XML to the console. */
 public class PrintCommand extends Command {
@@ -12,7 +12,7 @@ public class PrintCommand extends Command {
      * @param document the XML document to operate on
      */
     public PrintCommand(XmlDocument document) {
-        super("print", "print\t\t\tprints the content of the XML file");
+        super("print", "", "prints the content of the XML file");
         this.document = document;
     }
 

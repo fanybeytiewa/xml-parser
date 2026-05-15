@@ -16,7 +16,6 @@ Developed as a coursework project for the **OOP 1** course at Technical Universi
   - [XPath Queries](#xpath-queries)
 - [XPath Operators](#xpath-operators)
 - [Project Structure](#project-structure)
-- [Architecture & Design Patterns](#architecture--design-patterns)
 - [Author](#author)
 
 ## Overview
@@ -27,7 +26,9 @@ Key features:
 - Manual XML parsing and serialization
 - Automatic unique ID assignment for all elements
 - Attribute and element manipulation via commands
+- Full support for XML Namespaces and prefix resolution
 - Simplified XPath 2.0 query support with `/`, `[]`, `@`, and `=` operators
+- Full XPath axis navigation (`ancestor::`, `descendant::`, `parent::`, etc.)
 - File management with `open`, `save`, `save as`, and `close`
 
 ## Getting Started
@@ -196,7 +197,7 @@ Lists all child elements with their tag names and attributes.
 ```
 > children gen-2
 Children of element 'gen-2':
-1. book -> id="1_1" year="1965"
+1. XmlElement { tag='book', attributes=[id="1_1", year="1965"], children=none }
 2. book -> id="2" year="1951"
 ```
 
@@ -204,7 +205,7 @@ Children of element 'gen-2':
 Accesses the n-th child element (0-indexed).
 ```
 > child gen-2 0
-book -> id="1_1" year="1965"
+XmlElement { tag='book', attributes=[id="1_1", year="1965"], children=none }
 ```
 
 #### `text <id>`
@@ -233,16 +234,19 @@ Harry Potter
 The Hobbit
 ```
 
-## XPath Operators
+## XPath Operators & Axes
 
-The following XPath operators are supported:
+The following XPath operators and axes are supported:
 
-| Operator | Syntax | Description | Example |
+| Operator/Axis | Syntax | Description | Example |
 |---|---|---|---|
 | `/` | `tag/tag` | Navigate to child elements by tag name | `section/book/title` |
 | `[]` | `tag[n]` | Select the n-th matching element (0-indexed) | `section[0]/book[1]` |
 | `=` | `tag(key="value")` | Filter elements by attribute or child text content | `section(category="Fantasy")` |
 | `@` | `tag(@attr)` | Extract attribute values from matching elements | `section/book(@id)` |
+| `Axis::` | `axis::tag` | Navigate up or down the document tree. Supported axes: `child::`, `parent::`, `ancestor::`, `ancestor-or-self::`, `descendant::`, `descendant-or-self::`, `self::` | `b1 ancestor::section` |
+
+> **Note on Namespaces:** The XPath engine fully supports XML namespaces. You can query elements and attributes using their prefixes (e.g., `bk:book(bk:status="available")`).
 
 ### XPath Examples
 
@@ -276,12 +280,23 @@ src/bg/tu_varna/sit/f24621627/
 │
 ├── Application.java              # Entry point
 ├── CommandLineInterface.java     # CLI loop and command routing
-├── XmlDocument.java              # Document lifecycle (open, save, close)
-├── XmlElement.java               # XML element data model
-├── XmlParser.java                # Custom XML string parser
-├── IdAssigner.java               # Unique ID generation and assignment
-├── XPathService.java             # XPath query evaluation engine
-├── XmlParseException.java        # Custom exception for parse errors
+│
+├── models/
+│   ├── XmlDocument.java          # Document lifecycle and memory state
+│   └── XmlElement.java           # XML element data model (tree node)
+│
+├── parsers/
+│   ├── XmlParser.java            # Custom XML string parser (tree builder)
+│   ├── AttributeTagParser.java   # Strategy for parsing attributes
+│   ├── SimpleTagParser.java      # Strategy for parsing simple tags
+│   └── IdAssigner.java           # Unique ID generation and assignment
+│
+├── io/
+│   ├── FileHandler.java          # File system I/O operations
+│   └── XmlSerializer.java        # XML text formatting and serialization
+│
+├── exceptions/
+│   └── XmlParseException.java    # Custom exception for parse errors
 │
 ├── commands/                     # Command Pattern — one class per command
 │   ├── Command.java              #   Abstract base class
@@ -305,7 +320,8 @@ src/bg/tu_varna/sit/f24621627/
     ├── TagNavigationOperator.java
     ├── IndexOperator.java
     ├── AttributeFilterOperator.java
-    └── AttributeAccessor.java
+    ├── AttributeAccessor.java
+    └── AxisResolver.java             # Resolves XPath axes
 ```
 
 ## Author

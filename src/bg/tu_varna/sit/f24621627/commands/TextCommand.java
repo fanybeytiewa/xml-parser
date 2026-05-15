@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for printing the text content of an element. */
 public class TextCommand extends Command {
@@ -13,7 +13,7 @@ public class TextCommand extends Command {
      * @param document the XML document to operate on
      */
     public TextCommand(XmlDocument document) {
-        super("text", "text <id>\t\t\tprints the text content of an element");
+        super("text", "<id>", "prints the text content of an element");
         this.document = document;
     }
 

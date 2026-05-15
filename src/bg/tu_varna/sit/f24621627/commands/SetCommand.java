@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for setting an attribute value. */
 public class SetCommand extends Command {
@@ -13,7 +13,7 @@ public class SetCommand extends Command {
      * @param document the XML document to operate on
      */
     public SetCommand(XmlDocument document) {
-        super("set", "set <id> <key> <val>\tsets attribute value");
+        super("set", "<id> <key> <val>", "sets attribute value");
         this.document = document;
     }
 

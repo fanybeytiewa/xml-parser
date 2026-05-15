@@ -1,6 +1,8 @@
 package bg.tu_varna.sit.f24621627;
 
 import bg.tu_varna.sit.f24621627.commands.*;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.xpath.XPathService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,8 +54,7 @@ public class CommandLineInterface {
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) continue;
 
-            // Split into max 4 parts for the general case (important for set)
-            String[] args = input.split("\\s+", 4);
+            String[] args = parseArguments(input);
             String commandName = args[0].toLowerCase();
 
             Command command = commands.get(commandName);
@@ -62,24 +63,7 @@ public class CommandLineInterface {
                 continue;
             }
 
-            // If the command is open, take everything after the command name as one argument
-            if (commandName.equals("open")) {
-                String parts[] = input.split("\\s+", 2); // Split into "open" and "everything else"
-                if (parts.length > 1) {
-                    args = new String[]{"open", parts[1]};
-                }
-            }
-
-            // If the command is save as, take the path as one argument (may contain spaces)
-            if (commandName.equals("save") && args.length > 1 && args[1].equalsIgnoreCase("as")) {
-                String[] parts = input.split("\\s+", 3); // Split into "save", "as" and "everything else"
-                if (parts.length >= 3) {
-                    args = new String[]{"save", "as", parts[2]};
-                }
-            }
-
-            if (!commandName.equals("open") && !commandName.equals("help") &&
-                    !commandName.equals("exit") && !document.isOpened()) {
+            if (requiresOpenDocument(commandName) && !document.isOpened()) {
                 System.out.println("Error: No file is currently opened.");
                 continue;
             }
@@ -87,5 +71,43 @@ public class CommandLineInterface {
             command.setArgs(args);
             command.execute();
         }
+    }
+
+    /**
+     * Parses the raw user input into an array of arguments, handling special cases.
+     * @param input the raw user input
+     * @return an array of parsed arguments
+     */
+    private String[] parseArguments(String input) {
+        // Split into max 4 parts for the general case (important for set)
+        String[] args = input.split("\\s+", 4);
+        String commandName = args[0].toLowerCase();
+
+        // If the command is open, take everything after the command name as one argument
+        if (commandName.equals("open")) {
+            String[] parts = input.split("\\s+", 2);
+            if (parts.length > 1) {
+                return new String[]{"open", parts[1]};
+            }
+        }
+
+        // If the command is save as, take the path as one argument (may contain spaces)
+        if (commandName.equals("save") && args.length > 1 && args[1].equalsIgnoreCase("as")) {
+            String[] parts = input.split("\\s+", 3);
+            if (parts.length >= 3) {
+                return new String[]{"save", "as", parts[2]};
+            }
+        }
+
+        return args;
+    }
+
+    /**
+     * Checks if a command requires an opened document to be executed.
+     * @param commandName the name of the command
+     * @return true if it requires an opened document, false otherwise
+     */
+    private boolean requiresOpenDocument(String commandName) {
+        return !commandName.equals("open") && !commandName.equals("help") && !commandName.equals("exit");
     }
 }

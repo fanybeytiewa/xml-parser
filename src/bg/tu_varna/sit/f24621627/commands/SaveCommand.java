@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
 
 /** Command for saving the document (save or save as). */
 public class SaveCommand extends Command {
@@ -12,7 +12,7 @@ public class SaveCommand extends Command {
      * @param document the XML document to operate on
      */
     public SaveCommand(XmlDocument document) {
-        super("save", "save \t\t\t saves the currently opened file (or 'save as <file>')");
+        super("save", "", "saves the currently opened file (or 'save as <file>')");
         this.document = document;
     }
 

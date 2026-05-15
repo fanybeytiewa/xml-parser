@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for selecting an attribute value by element ID and key. */
 public class SelectCommand extends Command {
@@ -13,7 +13,7 @@ public class SelectCommand extends Command {
      * @param document the XML document to operate on
      */
     public SelectCommand(XmlDocument document) {
-        super("select", "select <id> <key>\tselects an attribute from an element");
+        super("select", "<id> <key>", "selects an attribute from an element");
         this.document = document;
     }
 

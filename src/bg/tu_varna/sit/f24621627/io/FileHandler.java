@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.io;
 
 import java.io.FileWriter;
 import java.io.IOException;

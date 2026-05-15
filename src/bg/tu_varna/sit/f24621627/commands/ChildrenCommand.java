@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for listing all children of an element. */
 public class ChildrenCommand extends Command {
@@ -13,7 +13,7 @@ public class ChildrenCommand extends Command {
      * @param document the XML document to operate on
      */
     public ChildrenCommand(XmlDocument document) {
-        super("children", "children <id>\t\tlists all children of an element");
+        super("children", "<id>", "lists all children of an element");
         this.document = document;
     }
 
@@ -36,11 +36,24 @@ public class ChildrenCommand extends Command {
         if (element.getChildren() == null || element.getChildren().isEmpty()) {
             System.out.println("Element '" + targetId + "' has no children.");
         } else {
-            System.out.println("Children of element '" + targetId + "':");
+            System.out.println("Children of element '" + targetId + "'(attributes):");
 
             for (int i = 0; i < element.getChildren().size(); i++) {
                 XmlElement child = element.getChildren().get(i);
-                System.out.println(document.getSerializer().serialize(child, 0).trim());
+                
+                StringBuilder attrs = new StringBuilder();
+                for (java.util.Map.Entry<String, String> entry : child.getAttributes().entrySet()) {
+                    if (attrs.length() > 0) {
+                        attrs.append(", ");
+                    }
+                    attrs.append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
+                }
+                
+                if (attrs.length() > 0) {
+                    System.out.println(attrs.toString());
+                } else {
+                    System.out.println("Child tag <" + child.getTag() + "> has no attributes.");
+                }
             }
         }
     }

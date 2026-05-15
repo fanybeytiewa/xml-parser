@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for deleting an attribute from an element by ID and key. */
 public class DeleteCommand extends Command {
@@ -13,7 +13,7 @@ public class DeleteCommand extends Command {
      * @param document the XML document to operate on
      */
     public DeleteCommand(XmlDocument document) {
-        super("delete", "delete <id> <key>\tdeletes an attribute from an element");
+        super("delete", "<id> <key>", "deletes an attribute from an element");
         this.document = document;
     }
 

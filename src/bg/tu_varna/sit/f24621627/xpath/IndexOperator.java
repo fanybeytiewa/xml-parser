@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ public class IndexOperator extends XPathOperator {
             return new ArrayList<>();
         }
 
-        // First navigate by tag, then select by index
-        List<XmlElement> matches = findChildrenByTag(parents, tagName);
+        // First navigate by axis and tag, then select by index
+        List<XmlElement> matches = resolveAxisAndTag(parents, tagName);
         return selectByIndex(matches, index);
     }
 

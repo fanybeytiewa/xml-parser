@@ -1,20 +1,21 @@
 package bg.tu_varna.sit.f24621627.commands;
 
-import bg.tu_varna.sit.f24621627.XmlDocument;
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlDocument;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 /** Command for adding a new child element. */
 public class NewChildCommand extends Command {
     /** Reference to the XML document being operated on. */
     private XmlDocument document;
-    private int newChildCounter = 1; // Counter for generating new child IDs
+    /** Counter for generating new child IDs. */
+    private int newChildCounter = 1;
 
     /**
      * Creates a new NewChildCommand.
      * @param document the XML document to operate on
      */
     public NewChildCommand(XmlDocument document) {
-        super("newchild", "newchild <id>\t\tadds a new child element");
+        super("newchild", "<id>", "adds a new child element");
         this.document = document;
     }
 

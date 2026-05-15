@@ -1,4 +1,10 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.models;
+
+import bg.tu_varna.sit.f24621627.io.FileHandler;
+import bg.tu_varna.sit.f24621627.parsers.IdAssigner;
+import bg.tu_varna.sit.f24621627.parsers.XmlParser;
+import bg.tu_varna.sit.f24621627.exceptions.XmlParseException;
+import bg.tu_varna.sit.f24621627.io.XmlSerializer;
 
 import java.io.IOException;
 import java.util.Map;

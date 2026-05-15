@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.XmlElement;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.List;
 
@@ -30,6 +30,6 @@ public class TagNavigationOperator extends XPathOperator {
      */
     @Override
     public List<XmlElement> apply(List<XmlElement> parents, String step) {
-        return findChildrenByTag(parents, step.trim());
+        return resolveAxisAndTag(parents, step.trim());
     }
 }

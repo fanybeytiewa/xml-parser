@@ -1,6 +1,6 @@
-package bg.tu_varna.sit.f24621627;
+package bg.tu_varna.sit.f24621627.xpath;
 
-import bg.tu_varna.sit.f24621627.xpath.*;
+import bg.tu_varna.sit.f24621627.models.XmlElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +88,9 @@ public class XPathService {
             String text = el.getTextContent();
             if (text != null && !text.trim().isEmpty()) {
                 results.add(text.trim());
-            } else if (!el.getAttributes().isEmpty()) {
-                results.add(String.join(" ", el.getAttributes().values()));
+            } else {
+                // Return the beautiful object-oriented representation
+                results.add(el.toString());
             }
         }
         return results;
