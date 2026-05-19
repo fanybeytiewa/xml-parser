@@ -66,6 +66,9 @@ public class XPathService {
     /**
      * Finds the matching operator for the given step and applies it.
      * Uses polymorphism — each operator decides if it can handle the step.
+     * @param elements the current list of context elements
+     * @param step the XPath step expression to apply
+     * @return list of elements resulting from applying the operator
      */
     private List<XmlElement> applyOperator(List<XmlElement> elements, String step) {
         for (XPathOperator operator : operators) {

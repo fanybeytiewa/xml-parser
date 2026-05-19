@@ -10,8 +10,7 @@ import java.util.List;
  * Handles steps of the form "tagName(@attrName)" or "(@attrName)".
  * Example: section[1](@year), (@id)
  *
- * This is a terminal operation — returns List<String> instead of List<XmlElement>.
- */
+ * This is a terminal operation — returns {@code List<String>} instead of {@code List<XmlElement>}. */
 public class AttributeAccessor {
 
     /**

@@ -43,12 +43,18 @@ public class XmlDocument {
         this.fileHandler = new FileHandler();
     }
 
-    /** @return the ID registry */
+    /**
+     * Returns the ID registry.
+     * @return the ID registry
+     */
     public Map<String, XmlElement> getIdRegistry() {
         return idRegistry;
     }
 
-    /** @return the XML serializer instance */
+    /**
+     * Returns the XML serializer instance.
+     * @return the XML serializer instance
+     */
     public XmlSerializer getSerializer() {
         return serializer;
     }
@@ -118,7 +124,10 @@ public class XmlDocument {
         System.out.println("Successfully closed the document.");
     }
 
-    /** @return true if a file is currently opened */
+    /**
+     * Checks if a file is currently opened.
+     * @return true if a file is currently opened
+     */
     public boolean isOpened() {
         return isFileOpened;
     }
@@ -152,7 +161,10 @@ public class XmlDocument {
         saveAs(this.currentFilePath);
     }
 
-    /** @return the root element of the document or null */
+    /**
+     * Returns the root element of the document.
+     * @return the root element of the document or null
+     */
     public XmlElement getRootElement() {
         return this.rootElement;
     }
@@ -195,6 +207,8 @@ public class XmlDocument {
     /**
      * Registers an element in the ID registry.
      * Used instead of direct access to idRegistry.
+     * @param id the unique identifier for the element
+     * @param element the element to register
      */
     public void registerElement(String id, XmlElement element) {
         if (idRegistry != null) {
@@ -205,6 +219,9 @@ public class XmlDocument {
     /**
      * Factory method — creates a parser and parses the content.
      * Encapsulates the creation of XmlParser.
+     * @param content the XML content string to parse
+     * @return the root element of the parsed tree
+     * @throws XmlParseException if the XML structure is invalid
      */
     private XmlElement parseContent(String content) throws XmlParseException {
         XmlParser parser = new XmlParser();
@@ -214,6 +231,8 @@ public class XmlDocument {
     /**
      * Factory method — creates an IdAssigner and assigns IDs.
      * Encapsulates the creation of IdAssigner.
+     * @param root the root element of the document (can be null)
+     * @return map of id to element for fast lookup
      */
     private Map<String, XmlElement> buildIdRegistry(XmlElement root) {
         IdAssigner assigner = new IdAssigner();

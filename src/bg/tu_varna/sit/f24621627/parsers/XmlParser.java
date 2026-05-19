@@ -101,6 +101,7 @@ public class XmlParser implements ElementParser {
      * Handles an opening tag — delegates to TagParser for element creation,
      * then manages the tree structure (parent-child relationships).
      * @param tagContent the content between &lt; and &gt; (e.g. "book id=\"1\"")
+     * @throws XmlParseException if the tag content is invalid
      */
     private void handleOpeningTag(String tagContent) throws XmlParseException {
         boolean isSelfClosing = false;

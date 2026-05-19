@@ -42,6 +42,9 @@ public class AxisResolver {
 
     /**
      * Checks if the element matches the node test (tag name or *).
+     * @param node the element to check
+     * @param nodeTest the tag name or wildcard to match against
+     * @return true if the node matches, false otherwise
      */
     private static boolean matchesNodeTest(XmlElement node, String nodeTest) {
         if ("*".equals(nodeTest)) {
@@ -53,6 +56,9 @@ public class AxisResolver {
 
     /**
      * Retrieves all nodes belonging to the specified axis for a single context node.
+     * @param node the context element
+     * @param axis the axis name (e.g., "child", "parent", "ancestor")
+     * @return a list of resolved elements along the specified axis
      */
     private static List<XmlElement> getAxisNodes(XmlElement node, String axis) {
         List<XmlElement> result = new ArrayList<>();
@@ -85,19 +91,31 @@ public class AxisResolver {
         return result;
     }
 
-    /** Collects the immediate children of the node. */
+    /**
+     * Collects the immediate children of the node.
+     * @param node the context element
+     * @param result the list to append the collected elements to
+     */
     private static void collectChildren(XmlElement node, List<XmlElement> result) {
         result.addAll(node.getChildren());
     }
 
-    /** Collects the immediate parent of the node, if it exists. */
+    /**
+     * Collects the immediate parent of the node, if it exists.
+     * @param node the context element
+     * @param result the list to append the collected parent to
+     */
     private static void collectParent(XmlElement node, List<XmlElement> result) {
         if (node.getParent() != null) {
             result.add(node.getParent());
         }
     }
 
-    /** Collects all ancestors of the node (parent, grandparent, etc.). */
+    /**
+     * Collects all ancestors of the node (parent, grandparent, etc.).
+     * @param node the context element
+     * @param result the list to append the collected ancestors to
+     */
     private static void collectAncestors(XmlElement node, List<XmlElement> result) {
         XmlElement curr = node.getParent();
         while (curr != null) {
@@ -106,25 +124,39 @@ public class AxisResolver {
         }
     }
 
-    /** Collects the node itself and all its ancestors. */
+    /**
+     * Collects the node itself and all its ancestors.
+     * @param node the context element
+     * @param result the list to append the node and its ancestors to
+     */
     private static void collectAncestorOrSelf(XmlElement node, List<XmlElement> result) {
         result.add(node);
         collectAncestors(node, result);
     }
 
-    /** Collects the node itself and all its descendants. */
+    /**
+     * Collects the node itself and all its descendants.
+     * @param node the context element
+     * @param result the list to append the node and its descendants to
+     */
     private static void collectDescendantOrSelf(XmlElement node, List<XmlElement> result) {
         result.add(node);
         collectDescendants(node, result);
     }
 
-    /** Collects only the node itself. */
+    /**
+     * Collects only the node itself.
+     * @param node the context element
+     * @param result the list to append the node to
+     */
     private static void collectSelf(XmlElement node, List<XmlElement> result) {
         result.add(node);
     }
 
     /**
      * Recursively collects all descendants of a node.
+     * @param node the context element
+     * @param result the list to append the collected descendants to
      */
     private static void collectDescendants(XmlElement node, List<XmlElement> result) {
         for (XmlElement child : node.getChildren()) {

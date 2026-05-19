@@ -9,6 +9,9 @@ import bg.tu_varna.sit.f24621627.models.XmlElement;
  */
 public class XmlSerializer {
 
+    /** Default constructor for XmlSerializer. */
+    public XmlSerializer() {}
+
     /**
      * Converts an XmlElement and its children to a formatted XML string.
      * @param element the element to serialize

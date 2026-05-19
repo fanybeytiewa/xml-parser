@@ -39,12 +39,18 @@ public class XmlElement {
         this.parent = null;
     }
 
-    /** @return the tag name */
+    /**
+     * Returns the tag name.
+     * @return the tag name
+     */
     public String getTag() {
         return tag;
     }
 
-    /** @return the text content of the element */
+    /**
+     * Returns the text content of the element.
+     * @return the text content of the element
+     */
     public String getTextContent() {
         return textContent;
     }
@@ -90,7 +96,10 @@ public class XmlElement {
         return this.attributes.get(key);
     }
 
-    /** @return the value of the "id" attribute or null */
+    /**
+     * Returns the value of the "id" attribute.
+     * @return the value of the "id" attribute or null
+     */
     public String getId() {
         return this.attributes.get("id");
     }
@@ -120,7 +129,10 @@ public class XmlElement {
         this.children.add(child);
     }
 
-    /** @return the parent element, or null if root */
+    /**
+     * Returns the parent element.
+     * @return the parent element, or null if root
+     */
     public XmlElement getParent() {
         return parent;
     }

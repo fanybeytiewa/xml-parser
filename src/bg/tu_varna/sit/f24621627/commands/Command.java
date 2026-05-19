@@ -22,6 +22,7 @@ public abstract class Command {
     /**
      * Creates a new command with a name and description.
      * @param name the command name ( e.g. "open", "save")
+     * @param argsSyntax the syntax of the command arguments
      * @param description description for the help menu
      */
     public Command(String name, String argsSyntax, String description) {
@@ -30,16 +31,28 @@ public abstract class Command {
         this.description = description;
     }
 
-    /** @return the command name */
+    /**
+     * Returns the command name.
+     * @return the command name
+     */
     public String getName() { return name; }
 
-    /** @return the command description */
+    /**
+     * Returns the command description.
+     * @return the command description
+     */
     public String getDescription() { return description; }
 
-    /** @return the command syntax */
+    /**
+     * Returns the command syntax.
+     * @return the command syntax
+     */
     public String getSyntax() { return (argsSyntax == null || argsSyntax.isEmpty()) ? name : name + " " + argsSyntax; }
 
-    /** @return the arguments passed to the command */
+    /**
+     * Returns the arguments passed to the command.
+     * @return the arguments passed to the command
+     */
     public String[] getArgs() { return args; }
 
     /**
