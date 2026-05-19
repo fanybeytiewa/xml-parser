@@ -9,7 +9,6 @@ import java.util.List;
  * Class for accessing attribute values (@).
  * Handles steps of the form "tagName(@attrName)" or "(@attrName)".
  * Example: section[1](@year), (@id)
- *
  * This is a terminal operation — returns {@code List<String>} instead of {@code List<XmlElement>}. */
 public class AttributeAccessor {
 

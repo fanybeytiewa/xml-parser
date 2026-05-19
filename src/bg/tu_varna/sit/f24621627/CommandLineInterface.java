@@ -99,6 +99,14 @@ public class CommandLineInterface {
             }
         }
 
+        // Специален случай за xpath: разделяме само на 3 части (команда, ID, Път)
+        if (commandName.equals("xpath")) {
+            String[] xpathParts = input.split("\\s+", 3);
+            if (xpathParts.length >= 3) {
+                return xpathParts;
+            }
+        }
+
         return args;
     }
 
